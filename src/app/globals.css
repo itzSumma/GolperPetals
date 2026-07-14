@@ -1,0 +1,14 @@
+@import "tailwindcss";
+@import "@heroui/styles";
+
+
+@layer base {
+  body {
+    @apply antialiased text-slate-800;
+  }
+  /* ফ্লাওয়ার শপের জন্য সফট রেড শেড */
+  :root {
+    --primary-red: #e11d48; 
+    --soft-red: #fff1f2;
+  }
+}
