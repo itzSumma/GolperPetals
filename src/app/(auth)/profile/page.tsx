@@ -2,25 +2,28 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
-import { AuthUser, getCurrentUser, logoutUser } from "@/lib/auth";
+import { useEffect } from "react";
+import { authClient } from "@/lib/auth-client";
 
 export default function ProfilePage() {
   const router = useRouter();
-  const [user, setUser] = useState<AuthUser | null>(null);
+  const { data: session, isPending } = authClient.useSession();
 
   useEffect(() => {
-    getCurrentUser()
-      .then(setUser)
-      .catch(() => router.push("/login"));
-  }, [router]);
+    if (!isPending && !session) {
+      router.push("/login");
+    }
+  }, [isPending, router, session]);
 
   function handleLogout() {
-    logoutUser();
-    router.push("/login");
+    authClient.signOut({
+      fetchOptions: {
+        onSuccess: () => router.push("/login"),
+      },
+    });
   }
 
-  if (!user) {
+  if (isPending || !session) {
     return (
       <section className="w-full rounded-[28px] border border-rose-100 bg-white p-8 text-center shadow-2xl shadow-rose-100/80">
         <p className="font-semibold text-gray-700">Loading profile...</p>
@@ -33,9 +36,11 @@ export default function ProfilePage() {
       <p className="text-sm font-bold uppercase tracking-[0.24em] text-rose-500">
         Profile
       </p>
-      <h1 className="mt-3 text-4xl font-black text-rose-950">{user.name}</h1>
+      <h1 className="mt-3 text-4xl font-black text-rose-950">
+        {session.user.name}
+      </h1>
       <p className="mt-3 text-sm leading-6 text-gray-600">
-        This profile was loaded through the protected JWT endpoint.
+        This profile is protected by Better Auth session management.
       </p>
 
       <dl className="mt-8 space-y-4 rounded-3xl bg-rose-50 p-5">
@@ -43,13 +48,17 @@ export default function ProfilePage() {
           <dt className="text-xs font-bold uppercase tracking-[0.2em] text-rose-500">
             User ID
           </dt>
-          <dd className="mt-1 break-all font-semibold text-gray-900">{user.id}</dd>
+          <dd className="mt-1 break-all font-semibold text-gray-900">
+            {session.user.id}
+          </dd>
         </div>
         <div>
           <dt className="text-xs font-bold uppercase tracking-[0.2em] text-rose-500">
             Email
           </dt>
-          <dd className="mt-1 font-semibold text-gray-900">{user.email}</dd>
+          <dd className="mt-1 font-semibold text-gray-900">
+            {session.user.email}
+          </dd>
         </div>
       </dl>
 

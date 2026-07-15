@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { FormEvent, useMemo, useState } from "react";
-import { registerUser } from "@/lib/auth";
+import { authClient } from "@/lib/auth-client";
 
 function EyeIcon({ hidden }: { hidden: boolean }) {
   return (
@@ -47,7 +47,7 @@ export default function RegisterPage() {
       return "Strong";
     }
 
-    if (password.length >= 6) {
+    if (password.length >= 8) {
       return "Good";
     }
 
@@ -61,7 +61,16 @@ export default function RegisterPage() {
     setIsSubmitting(true);
 
     try {
-      await registerUser({ name, email, password });
+      const { error: signUpError } = await authClient.signUp.email({
+        name,
+        email,
+        password,
+      });
+
+      if (signUpError) {
+        throw new Error(signUpError.message || "Registration failed");
+      }
+
       setMessage("Account created. Taking you to login...");
       setTimeout(() => router.push("/login"), 900);
     } catch (registerError) {
@@ -83,7 +92,7 @@ export default function RegisterPage() {
           Create Account
         </h1>
         <p className="mt-3 text-sm leading-6 text-gray-600">
-          Register once, then login securely with your JWT session.
+          Register once, then login securely with a managed Better Auth session.
         </p>
       </div>
 
@@ -128,7 +137,7 @@ export default function RegisterPage() {
               Password
             </label>
             <span className="text-xs font-bold text-rose-600">
-              {password ? passwordStrength : "At least 6 characters"}
+              {password ? passwordStrength : "At least 8 characters"}
             </span>
           </div>
           <div className="relative mt-2">
@@ -136,7 +145,7 @@ export default function RegisterPage() {
               id="password"
               name="password"
               type={showPassword ? "text" : "password"}
-              minLength={6}
+              minLength={8}
               required
               value={password}
               onChange={(event) => setPassword(event.target.value)}

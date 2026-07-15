@@ -20,7 +20,7 @@ export default function ShopPage() {
   const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
-    fetch("http://localhost:5000/flowers")
+    fetch("/api/flowers")
       .then((res) => res.json())
       .then((data) => {
         setFlowers(data);

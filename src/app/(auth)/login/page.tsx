@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { FormEvent, useState } from "react";
-import { loginUser } from "@/lib/auth";
+import { authClient } from "@/lib/auth-client";
 
 function EyeIcon({ hidden }: { hidden: boolean }) {
   return (
@@ -48,7 +48,16 @@ export default function LoginPage() {
     setIsSubmitting(true);
 
     try {
-      await loginUser({ email, password });
+      const { error: signInError } = await authClient.signIn.email({
+        email,
+        password,
+        rememberMe: true,
+      });
+
+      if (signInError) {
+        throw new Error(signInError.message || "Login failed");
+      }
+
       setMessage("Login successful. Opening your dashboard...");
       setTimeout(() => router.push("/dashboard"), 500);
     } catch (loginError) {
