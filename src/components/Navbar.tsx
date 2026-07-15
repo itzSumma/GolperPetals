@@ -54,15 +54,15 @@ export default function Navbar(): React.JSX.Element {
   return (
     <header className="sticky top-0 z-50 w-full border-b border-red-200 bg-white/95 backdrop-blur-sm shadow-sm">
       <div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-6 lg:px-10">
-        <Link href="/" className="text-3xl font-extrabold tracking-tighter text-rose-700">
-          Golper<span className="text-red-600 text-3xl">Petals</span>
+        <Link href="/" className="shrink-0 text-3xl font-extrabold tracking-tighter text-rose-700">
+          Golper<span className="text-3xl text-red-600">Petals</span>
         </Link>
 
         {/* Desktop nav */}
-        <nav className="hidden items-center gap-2 md:flex">
+        <nav className="hidden items-center gap-1 xl:flex">
           {navLinks.map((link) => renderLink(link))}
           <Link href="/login">
-            <Button className="ml-4 bg-red-600 text-white font-bold text-base px-6 py-5 hover:bg-red-700 transition-all duration-300 hover:shadow-lg hover:scale-105">
+            <Button className="ml-3 bg-red-600 px-5 py-5 text-base font-bold text-white transition-all duration-300 hover:scale-105 hover:bg-red-700 hover:shadow-lg">
               Sign In
             </Button>
           </Link>
@@ -71,7 +71,7 @@ export default function Navbar(): React.JSX.Element {
         {/* Mobile toggle */}
         <button
           onClick={toggleMenu}
-          className="flex flex-col gap-2 md:hidden"
+          className="flex flex-col gap-2 xl:hidden"
           aria-label="Toggle menu"
         >
           <span className={`block h-0.5 w-8 bg-red-700 transition-all ${isOpen ? "translate-y-2.5 rotate-45" : ""}`} />
@@ -82,7 +82,7 @@ export default function Navbar(): React.JSX.Element {
 
       {/* Mobile nav */}
       {isOpen && (
-        <div className="border-t border-red-100 bg-white md:hidden animate-in slide-in-from-top-5">
+        <div className="animate-in slide-in-from-top-5 border-t border-red-100 bg-white xl:hidden">
           <nav className="flex flex-col gap-2 p-6">
             {navLinks.map((link) => renderLink(link, closeMenu))}
             <Link href="/login" onClick={closeMenu} className="mt-4">

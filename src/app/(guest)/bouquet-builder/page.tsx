@@ -24,11 +24,15 @@ export default function BouquetBuilderPage() {
   const [wrapping, setWrapping] = useState(wrappings[0]);
   const [message, setMessage] = useState("");
   const [status, setStatus] = useState("");
+  const [isLoading, setIsLoading] = useState(true);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
     fetch("/api/flowers")
       .then((response) => response.json())
-      .then((data) => setFlowers(Array.isArray(data) ? data : []));
+      .then((data) => setFlowers(Array.isArray(data) ? data : []))
+      .catch(() => setStatus("Could not load flowers. Please refresh the page."))
+      .finally(() => setIsLoading(false));
   }, []);
 
   const selectedFlowers = useMemo(
@@ -51,27 +55,40 @@ export default function BouquetBuilderPage() {
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    setStatus("Saving your custom bouquet...");
 
-    const response = await fetch("/api/custom-bouquets", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        flowers: selectedFlowers,
-        wrapping,
-        message,
-      }),
-    });
-    const data = await response.json();
-
-    if (!response.ok) {
-      setStatus(data.message || "Please login before saving your bouquet.");
+    if (selectedFlowers.length === 0) {
+      setStatus("Select at least one flower before submitting.");
       return;
     }
 
-    setStatus("Custom bouquet saved to your dashboard.");
-    setQuantities({});
-    setMessage("");
+    setStatus("Saving your custom bouquet...");
+    setIsSubmitting(true);
+
+    try {
+      const response = await fetch("/api/custom-bouquets", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          flowers: selectedFlowers,
+          wrapping,
+          message,
+        }),
+      });
+      const data = await response.json();
+
+      if (!response.ok) {
+        setStatus(data.message || "Please login before saving your bouquet.");
+        return;
+      }
+
+      setStatus("Custom bouquet saved to your dashboard.");
+      setQuantities({});
+      setMessage("");
+    } catch {
+      setStatus("Could not save your bouquet. Please try again.");
+    } finally {
+      setIsSubmitting(false);
+    }
   }
 
   return (
@@ -84,6 +101,12 @@ export default function BouquetBuilderPage() {
           <h1 className="mt-4 text-5xl font-black text-rose-950">
             Design a bouquet that says exactly what you mean.
           </h1>
+
+          {isLoading ? (
+            <p className="mt-10 rounded-3xl bg-white p-6 font-semibold text-rose-700 shadow-lg shadow-rose-100">
+              Loading available flowers...
+            </p>
+          ) : null}
 
           <div className="mt-10 grid gap-5 sm:grid-cols-2 xl:grid-cols-3">
             {flowers.map((flower) => (
@@ -196,10 +219,11 @@ export default function BouquetBuilderPage() {
           ) : null}
 
           <button
-            className="mt-5 w-full rounded-2xl bg-rose-600 px-5 py-4 font-black text-white shadow-lg shadow-rose-200 transition hover:bg-rose-700"
+            className="mt-5 w-full rounded-2xl bg-rose-600 px-5 py-4 font-black text-white shadow-lg shadow-rose-200 transition hover:bg-rose-700 disabled:cursor-not-allowed disabled:opacity-60"
+            disabled={isSubmitting || selectedFlowers.length === 0}
             type="submit"
           >
-            Submit Custom Bouquet
+            {isSubmitting ? "Saving..." : "Submit Custom Bouquet"}
           </button>
         </aside>
       </form>

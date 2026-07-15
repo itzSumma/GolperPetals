@@ -15,28 +15,40 @@ interface InstantBouquet {
 export default function InstantBouquetsPage() {
   const [bouquets, setBouquets] = useState<InstantBouquet[]>([]);
   const [status, setStatus] = useState("");
+  const [isLoading, setIsLoading] = useState(true);
+  const [processingId, setProcessingId] = useState("");
 
   useEffect(() => {
     fetch("/api/instant-bouquets")
       .then((response) => response.json())
-      .then((data) => setBouquets(Array.isArray(data) ? data : []));
+      .then((data) => setBouquets(Array.isArray(data) ? data : []))
+      .catch(() => setStatus("Could not load instant bouquets. Please refresh."))
+      .finally(() => setIsLoading(false));
   }, []);
 
   async function purchaseBouquet(bouquetId: string) {
     setStatus("Saving your order...");
-    const response = await fetch("/api/orders", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ bouquetId }),
-    });
-    const data = await response.json();
+    setProcessingId(bouquetId);
 
-    if (!response.ok) {
-      setStatus(data.message || "Please login before purchasing.");
-      return;
+    try {
+      const response = await fetch("/api/orders", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ bouquetId }),
+      });
+      const data = await response.json();
+
+      if (!response.ok) {
+        setStatus(data.message || "Please login before purchasing.");
+        return;
+      }
+
+      setStatus("Order saved to your dashboard.");
+    } catch {
+      setStatus("Could not save your order. Please try again.");
+    } finally {
+      setProcessingId("");
     }
-
-    setStatus("Order saved to your dashboard.");
   }
 
   return (
@@ -51,6 +63,12 @@ export default function InstantBouquetsPage() {
         {status ? (
           <p className="mt-6 rounded-2xl bg-rose-50 p-4 font-semibold text-rose-700">
             {status}
+          </p>
+        ) : null}
+
+        {isLoading ? (
+          <p className="mt-10 rounded-3xl bg-rose-50 p-6 font-semibold text-rose-700">
+            Loading ready-made bouquets...
           </p>
         ) : null}
 
@@ -90,11 +108,12 @@ export default function InstantBouquetsPage() {
                   ))}
                 </div>
                 <button
-                  className="mt-5 w-full rounded-2xl bg-rose-600 px-4 py-3 font-bold text-white transition hover:bg-rose-700"
+                  className="mt-5 w-full rounded-2xl bg-rose-600 px-4 py-3 font-bold text-white transition hover:bg-rose-700 disabled:cursor-not-allowed disabled:opacity-60"
+                  disabled={processingId === bouquet._id}
                   type="button"
                   onClick={() => purchaseBouquet(bouquet._id)}
                 >
-                  Purchase Instantly
+                  {processingId === bouquet._id ? "Saving..." : "Purchase Instantly"}
                 </button>
               </div>
             </article>
