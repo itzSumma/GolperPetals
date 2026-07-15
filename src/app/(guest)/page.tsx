@@ -19,12 +19,12 @@ export default function Home() {
   ];
 
   const products = [
-    { id: "1", name: "Velvet Red Roses", price: "$45", image: "https://images.unsplash.com/photo-1764160647304-6ab4dcd82d63?q=80&w=880&auto=format&fit=crop" },
-    { id: "2", name: "Crimson Tulips", price: "$50", image: "https://images.unsplash.com/photo-1683303489207-959d0160089e?q=80&w=687&auto=format&fit=crop" },
-    { id: "3", name: "Ruby Lily Bouquet", price: "$65", image: "https://images.unsplash.com/photo-1685307298280-a6655309a0bf?q=80&w=706&auto=format&fit=crop" },
-    { id: "4", name: "Royal Orchid Stems", price: "$75", image: "https://images.unsplash.com/photo-1534885320675-b08aa131cc5e?q=80&w=735&auto=format&fit=crop" },
-    { id: "5", name: "Golden Sunflower Set", price: "$55", image: "https://images.unsplash.com/photo-1618667066353-06982fc2ea72?q=80&w=687&auto=format&fit=crop" },
-    { id: "6", name: "Pure White Peonies", price: "$85", image: "https://images.unsplash.com/photo-1622290638053-94ecd31fe6c7?q=80&w=1074&auto=format&fit=crop" },
+    { id: "1", name: "Velvet Red Roses", description: "Classic red roses arranged for timeless romantic moments.", price: "$45", image: "https://images.unsplash.com/photo-1764160647304-6ab4dcd82d63?q=80&w=880&auto=format&fit=crop", origin: "Local" as const, rating: 4.8, reviews: 128, color: "Red" },
+    { id: "2", name: "Crimson Tulips", description: "Elegant tulips with a bold crimson finish and graceful stems.", price: "$50", image: "https://images.unsplash.com/photo-1683303489207-959d0160089e?q=80&w=687&auto=format&fit=crop", origin: "Imported" as const, rating: 4.7, reviews: 86, color: "Crimson" },
+    { id: "3", name: "Ruby Lily Bouquet", description: "Rich lily blooms designed for celebrations and heartfelt gifts.", price: "$65", image: "https://images.unsplash.com/photo-1685307298280-a6655309a0bf?q=80&w=706&auto=format&fit=crop", origin: "Imported" as const, rating: 4.6, reviews: 73, color: "Ruby" },
+    { id: "4", name: "Royal Orchid Stems", description: "Premium orchid stems with a polished, luxurious look.", price: "$75", image: "https://images.unsplash.com/photo-1534885320675-b08aa131cc5e?q=80&w=735&auto=format&fit=crop", origin: "Imported" as const, rating: 4.9, reviews: 59, color: "Purple" },
+    { id: "5", name: "Golden Sunflower Set", description: "Bright sunflowers that bring warmth to any room.", price: "$55", image: "https://images.unsplash.com/photo-1618667066353-06982fc2ea72?q=80&w=687&auto=format&fit=crop", origin: "Local" as const, rating: 4.9, reviews: 214, color: "Yellow" },
+    { id: "6", name: "Pure White Peonies", description: "Soft white peonies for refined bouquets and gentle occasions.", price: "$85", image: "https://images.unsplash.com/photo-1622290638053-94ecd31fe6c7?q=80&w=1074&auto=format&fit=crop", origin: "Local" as const, rating: 4.8, reviews: 96, color: "White" },
   ];
 
   return (
