@@ -4,7 +4,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, EffectFade } from "swiper/modules";
 import { useState } from "react";
-import FlowerCard from "@/components/FlowerCard"; // আপনার কম্পোনেন্টটি এখানে ইমপোর্ট করলাম
+import FlowerCard from "@/components/FlowerCard";
 
 import "swiper/css";
 import "swiper/css/effect-fade";
@@ -29,8 +29,7 @@ export default function Home() {
 
   return (
     <div className="flex flex-col min-h-screen bg-rose-50/30">
-      {/* Hero Banner Section */}
-      <section className="relative h-[700px] overflow-hidden">
+      <section className="relative h-[560px] overflow-hidden md:h-[650px] lg:h-[700px]">
         <Swiper modules={[Autoplay, EffectFade]} effect="fade" loop speed={1500} autoplay={{ delay: 5000, disableOnInteraction: false }} onSlideChange={(swiper) => setActiveIndex(swiper.realIndex)} className="h-full">
           {bannerData.map((item) => (
             <SwiperSlide key={item.id}>
@@ -43,29 +42,26 @@ export default function Home() {
         <div className="absolute inset-0 z-20 flex flex-col items-center justify-center px-6 text-center text-white">
           <AnimatePresence mode="wait">
             <motion.div key={activeIndex} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }} transition={{ duration: 0.8 }}>
-              <h1 className="max-w-5xl text-6xl font-black leading-tight">{bannerData[activeIndex].title} <span className="block text-red-300">{bannerData[activeIndex].subtitle}</span></h1>
-              <p className="mt-8 max-w-3xl text-xl text-gray-100">{bannerData[activeIndex].description}</p>
-              <button className="mt-10 rounded-full bg-red-600 px-8 py-4 text-lg font-semibold transition hover:bg-red-700">Create Your Bouquet</button>
+              <h1 className="max-w-5xl text-4xl font-black leading-tight sm:text-5xl lg:text-6xl">{bannerData[activeIndex].title} <span className="block text-red-300">{bannerData[activeIndex].subtitle}</span></h1>
+              <p className="mt-6 max-w-3xl text-base text-gray-100 sm:text-lg lg:text-xl">{bannerData[activeIndex].description}</p>
+              <button className="mt-8 rounded-full bg-red-600 px-6 py-3 text-base font-semibold transition hover:bg-red-700 sm:px-8 sm:py-4 sm:text-lg">Create Your Bouquet</button>
             </motion.div>
           </AnimatePresence>
         </div>
       </section>
 
-      {/* Featured Products Section */}
       <section className="py-20 px-6 max-w-7xl mx-auto w-full relative">
         <div className="text-center mb-16 relative z-10">
           <h2 className="text-4xl font-black text-red-950">Signature Blooms</h2>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 relative z-10">
-          {/* এখানে FlowerCard কম্পোনেন্টটি ব্যবহার করলাম */}
           {products.map((item) => (
             <FlowerCard key={item.id} item={item} />
           ))}
         </div>
       </section>
 
-      {/* Footer / CTA Section */}
       <section className="bg-rose-700 py-20 px-6">
         <div className="max-w-4xl mx-auto text-center">
           <h2 className="text-4xl font-bold text-white">Every Gift Begins with a Story</h2>

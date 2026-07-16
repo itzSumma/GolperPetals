@@ -5,12 +5,12 @@ const nextConfig: NextConfig = {
   images: {
     remotePatterns: [
       {
-        protocol: 'https',
-        hostname: 'images.unsplash.com',
+        protocol: "https",
+        hostname: "images.unsplash.com",
       },
       {
-        protocol: 'https',
-        hostname: 'media.istockphoto.com', // এই নতুন লাইনটি যোগ করুন
+        protocol: "https",
+        hostname: "media.istockphoto.com",
       },
     ],
   },

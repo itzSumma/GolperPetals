@@ -1,6 +1,6 @@
-"use client"; // এটি অবশ্যই শুরুতে থাকতে হবে
+"use client";
 import Link from "next/link";
-import { motion } from "framer-motion"; // motion ইমপোর্ট করা হলো
+import { motion } from "framer-motion";
 
 const footerSections = [
   {
@@ -32,12 +32,10 @@ export default function Footer(): React.JSX.Element {
 
   return (
     <footer className="relative mt-auto border-t border-red-100 bg-white pt-16 pb-8">
-      {/* Background Pattern */}
       <div className="absolute inset-0 bg-[radial-gradient(#fecdd3_0.5px,transparent_0.5px)] [background-size:16px_16px] opacity-20" />
       
       <div className="relative mx-auto max-w-7xl px-6 lg:px-8">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
-          {/* Brand Section */}
           <div className="space-y-4">
             <Link href="/" className="text-3xl font-extrabold text-red-600 tracking-tighter">
               Golper<span className="text-rose-700 text-3xl hover:text-black/45 transition-colors">Petals</span>
@@ -63,7 +61,6 @@ export default function Footer(): React.JSX.Element {
             </div>
           </div>
 
-          {/* Dynamic Footer Sections */}
           {footerSections.map((section) => (
             <div key={section.title}>
               <h3 className="text-md font-black text-gray-900 uppercase tracking-widest mb-6">
@@ -85,7 +82,6 @@ export default function Footer(): React.JSX.Element {
           ))}
         </div>
 
-        {/* Footer Bottom */}
         <div className="flex flex-col md:flex-row justify-between items-center gap-6 border-t border-red-100 pt-8">
           <p className="text-base text-zinc-500 font-medium">
             © {currentYear} GolperPetals. All rights reserved.

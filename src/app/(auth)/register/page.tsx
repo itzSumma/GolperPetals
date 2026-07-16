@@ -71,6 +71,7 @@ export default function RegisterPage() {
         throw new Error(signUpError.message || "Registration failed");
       }
 
+      await authClient.signOut();
       setMessage("Account created. Taking you to login...");
       setTimeout(() => router.push("/login"), 900);
     } catch (registerError) {

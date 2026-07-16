@@ -58,7 +58,6 @@ export default function Navbar(): React.JSX.Element {
           Golper<span className="text-3xl text-red-600">Petals</span>
         </Link>
 
-        {/* Desktop nav */}
         <nav className="hidden items-center gap-1 xl:flex">
           {navLinks.map((link) => renderLink(link))}
           <Link href="/login">
@@ -68,7 +67,6 @@ export default function Navbar(): React.JSX.Element {
           </Link>
         </nav>
 
-        {/* Mobile toggle */}
         <button
           onClick={toggleMenu}
           className="flex flex-col gap-2 xl:hidden"
@@ -80,7 +78,6 @@ export default function Navbar(): React.JSX.Element {
         </button>
       </div>
 
-      {/* Mobile nav */}
       {isOpen && (
         <div className="animate-in slide-in-from-top-5 border-t border-red-100 bg-white xl:hidden">
           <nav className="flex flex-col gap-2 p-6">
